@@ -1,0 +1,62 @@
+panda_controller:
+  ros__parameters:
+    
+    trajectory:
+      PA: [0.617, -0.40, 0.199]  # Start point [x, y, z] in meters
+      PB: [0.617,  0.40, 0.199]  # End point [x, y, z] in meters
+      mode: "polynomial"           # Trajectory mode: "constant", "polynomial"
+      speed: 0.1                 # End-effector speed [m/s]
+
+    obstacles:
+      radius: 0.05              # Cylinder radius [m]
+      height: 1.0               # Cylinder height [m]
+      
+      # Obstacle positions [x, y, z] - center of each cylinder
+      positions:
+        - [0.30, -0.20, 0.50]   # Obstacle 1 (left)
+        - [0.30,  0.20, 0.50]   # Obstacle 2 (right)
+    
+    # =========================================================================
+    # ROBOT GEOMETRY
+    # =========================================================================
+    robot:
+      link_radius: 0.063        # Robot link radius [m]
+    
+    control:
+      rate: 100.0               # Control loop rate [Hz]
+      
+      # Control gains
+      Kp: 15                  # Position tracking gain (primary task)
+      Ko: 5                   # Obstacle avoidance gain (secondary task)
+      
+      # Obstacle avoidance
+      d_influence: 0.35         # Distance at which obstacles start influencing [m]
+      
+      # Velocity limits
+      max_joint_velocity: 1.5   # Maximum joint velocity [rad/s]
+      max_null_velocity: 0.2    # Maximum null-space velocity [rad/s]
+      
+      # Numerical stability
+      damping: 0.05             # Damping factor for pseudoinverse
+    
+    initial_joint_positions: [0.0, -0.5, 0.0, -2.0, 0.0, 1.5, 0.785]  # [rad]
+    
+    visualization:
+      show_trajectory: true
+      gripper_opening: 0.04     # Gripper finger position [m]
+
+
+
+# =============================================================================
+# Standard DH Convention: T = Rot_z(θ) * Trans_z(d) * Trans_x(a) * Rot_x(α)
+
+                  # | Joint |   a [m]  |   d [m]  |  α [rad] |   θ      |
+                  # |-------|----------|----------|----------|----------|
+                  # |   1   |    0     |  0.333   |   -π/2   |   q1     |
+                  # |   2   |    0     |    0     |    π/2   |   q2     |
+                  # |   3   |  0.0825  |  0.316   |    π/2   |   q3     |
+                  # |   4   | -0.0825  |    0     |   -π/2   |   q4     |
+                  # |   5   |    0     |  0.384   |    π/2   |   q5     |
+                  # |   6   |  0.088   |    0     |    π/2   |   q6     |
+                  # |   7   |    0     |  0.107   |    0     |   q7     |
+# =============================================================================
